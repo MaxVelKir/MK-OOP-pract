@@ -11,11 +11,12 @@ class User {
     char *name;
     char email[MAX_L];
     int age;
+
     Challenge *challenges;
     int curr;
     int size;
 public:
-    User(const char* = nullptr, const char* = "\0", int = 1);
+    User(const char* = "\0", const char* = "\0", int = 1);
     User(User const &);
     ~User();
 

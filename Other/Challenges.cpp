@@ -38,7 +38,7 @@ Challenge& Challenges::getChallenge(const char* _name) {
 
 void Challenges::push(Challenge &temp) {
     if(curr == size) {
-        Challenge *arr = new Challenge[size++];
+        Challenge *arr = new Challenge[size + 1];
 
         for (int i = 0; i < curr; ++i) {
             arr[i] = challenges[i];
@@ -51,12 +51,16 @@ void Challenges::push(Challenge &temp) {
     }
 
     if(curr > 0) {
+        bool check = false;
         for (int j = 0; j < curr; ++j) {
-            if (strcmp(temp.getName(), challenges[j].getName()) == 0)
+            if (strcmp(temp.getName(), challenges[j].getName()) == 0) {
                 challenges[j].oneUpTimesUsed();
-            else
-                challenges[curr++] = temp;
+                check = true;
+                break;
+            }
         }
+        if(!check)
+            challenges[curr++] = temp;
     }
     else
         challenges[curr++] = temp;
@@ -75,6 +79,7 @@ Challenges& Challenges::operator=(Challenges const &temp) {
             challenges[i] = temp.challenges[i];
         }
     }
+    return *this;
 }
 
 void Challenges::print() {

@@ -31,13 +31,10 @@ void challenge(Users &users, Challenges &challenges) {
     int counter = 0;
     int wordCounter = 0;
 
-    bool check = true;
-
     for (int i = 0; i <= strlen(enter); i++) {
         if(enter[i] == ' ' && wordCounter == 0) {
             if (!users.check(word)) {
-                check = false;
-                cerr << "User missing!";
+                cerr << "User missing!" << endl;
                 break;
             }
             else {
@@ -49,11 +46,9 @@ void challenge(Users &users, Challenges &challenges) {
                 i++;
             }
         }
-
         else if (enter[i] == ' ' && wordCounter == 1) {
             if(word[0] != '#' || counter > 31) {
-                check = false;
-                cerr << "Invalid challenge!";
+                cerr << "Invalid challenge!" << endl;
                 break;
             }
             else {
@@ -69,14 +64,11 @@ void challenge(Users &users, Challenges &challenges) {
                 i++;
             }
         }
-
         else if ((i == strlen(enter) || enter[i] == ' ') && wordCounter > 1) {
             if (!users.check(word)) {
-                check = false;
-                cerr << "User missing!";
+                cerr << "User missing!" << endl;
                 break;
             }
-
             else {
                 users.getUser(word).push(challenges.getCurrChallenge());
 
@@ -88,7 +80,6 @@ void challenge(Users &users, Challenges &challenges) {
                 wordCounter++;
                 i++;
             }
-
         }
         word[counter++] = enter[i];
     }
@@ -116,31 +107,43 @@ void list_by(Challenges &challenges) {
     cin >> how;
 
     if (strcmp(how, "newest") == 0) {
-        Challenge *arr = new Challenge[challenges.getCurr()];
-        arr[0] = challenges.getChallenge(0);
+        bool isSorted = false;
+        do {
+            isSorted = true;
 
-        for (int i = 0; i < challenges.getCurr() - 1; ++i) {
-            for (int j = i + 1; j < challenges.getCurr(); ++j) {
-                if(challenges.getChallenge(j).getTimesUsed() < arr[j].getTimesUsed()) {
-                    arr[j] = arr[i];
-                    arr[i] = challenges.getChallenge(j);
-                }
-                else {
-                    arr[j] = challenges.getChallenge(j);
+            for (int i = challenges.getCurr() - 1; i > 0; --i) {
+                if(challenges.getChallenge(i) < challenges.getChallenge(i - 1)) {
+                    Challenge temp(challenges.getChallenge(i - 1));
+                    challenges.getChallenge(i - 1) = challenges.getChallenge(i);
+                    challenges.getChallenge(i) = temp;
+                    isSorted = false;
                 }
             }
         }
-        for (int k = 0; k < challenges.getCurr(); ++k) {
-            arr[k].print();
-        }
+        while (!isSorted);
+        challenges.print();
     }
 
     else if (strcmp(how, "oldest") == 0) {
+        bool isSorted = false;
+        do {
+            isSorted = true;
 
+            for (int i = challenges.getCurr() - 1; i > 0; --i) {
+                if(challenges.getChallenge(i) > challenges.getChallenge(i - 1)) {
+                    Challenge temp(challenges.getChallenge(i - 1));
+                    challenges.getChallenge(i - 1) = challenges.getChallenge(i);
+                    challenges.getChallenge(i) = temp;
+                    isSorted = false;
+                }
+            }
+        }
+        while (!isSorted);
+        challenges.print();
     }
 
     else if (strcmp(how, "most_popular") == 0) {
-
+        cerr << "This is literally just printing oldest?" << endl;
     }
 }
 

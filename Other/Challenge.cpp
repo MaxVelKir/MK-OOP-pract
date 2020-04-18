@@ -1,6 +1,6 @@
 #include "Challenge.h"
 
-Challenge::Challenge(const char* _name, const char* _status, int _timesUsed, float _rating) : rating(nullptr), timesUsed(_timesUsed) {
+Challenge::Challenge(const char* _name, const char* _status, int _timesUsed) : rating(nullptr), timesUsed(_timesUsed) {
     strcpy(name, _name);
     strcpy(status, _status);
     size = 2;
@@ -13,7 +13,8 @@ Challenge::Challenge(Challenge const &temp) : timesUsed(temp.timesUsed), size(te
     strcpy(name, temp.name);
     strcpy(status, temp.status);
     rating = new float[size];
-    for (int i = 1; i < curr; ++i) {
+
+    for (int i = 0; i < curr; ++i) {
         rating[i] = temp.rating[i];
     }
 }
@@ -31,6 +32,15 @@ int Challenge::getTimesUsed() {
 }
 
 void Challenge::setRating(float _rating) {
+    if(curr == size) {
+        float *arr = new float[size + 1];
+        for (int i = 0; i < curr; ++i) {
+            arr[i] = rating[0];
+        }
+        delete [] rating;
+        size++;
+        rating = arr;
+    }
     rating[curr++] = _rating;
     float average = 0;
     for (int i = 1; i < curr; ++i) {
@@ -60,13 +70,22 @@ Challenge& Challenge::operator=(Challenge const &temp) {
 
         size = temp.size;
         curr = temp.curr;
-        rating = new float[size];
+        timesUsed = temp.timesUsed;
 
-        for (int i = 1; i < curr; ++i) {
+        rating = new float[size];
+        for (int i = 0; i < curr; ++i) {
             rating[i] = temp.rating[i];
         }
     }
     return *this;
+}
+
+bool Challenge::operator>(const Challenge &temp) {
+    return timesUsed > temp.timesUsed;
+}
+
+bool Challenge::operator<(const Challenge &temp) {
+    return timesUsed < temp.timesUsed;
 }
 
 void Challenge::print() {

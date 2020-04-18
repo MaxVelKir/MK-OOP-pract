@@ -14,7 +14,7 @@ class Challenge {
     int size;
     int curr;
 public:
-    Challenge(const char* = "\0", const char* = "new", int = 1, float = 0);
+    Challenge(const char* = "\0", const char* = "new", int = 1);
     Challenge(Challenge const &);
     ~Challenge();
 
@@ -26,6 +26,9 @@ public:
     void print();
 
     Challenge& operator=(Challenge const &);
+    bool operator>(Challenge const &);
+    bool operator<(Challenge const &);
+
 };
 
 

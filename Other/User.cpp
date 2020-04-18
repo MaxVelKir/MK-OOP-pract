@@ -1,6 +1,6 @@
 #include "User.h"
 
-User::User(const char * _name, const char * _email, int _age) : age(_age), name(nullptr){
+User::User(const char * _name, const char * _email, int _age) : age(_age), name(nullptr) {
     if(_name) {
         name = new char[strlen(_name) + 1];
         strcpy(name, _name);
@@ -41,7 +41,7 @@ char* User::getName() {
 
 void User::push(const Challenge &temp) {
     if(curr == size) {
-        Challenge *arr = new Challenge[size++];
+        Challenge *arr = new Challenge[size + 1];
 
         for (int i = 0; i < curr; ++i) {
             arr[i] = challenges[i];
@@ -57,17 +57,27 @@ void User::push(const Challenge &temp) {
 }
 
 void User::remove(const char *_name) {
-    for (int i = 0; i < curr; ++i) {
-        if(strcmp(challenges[i].getName(), _name) == 0) {
-            Challenge *arr = new Challenge[size];
-            for (int j = 0; j < curr; ++j) {
-                if(i != j)
-                    arr[j] = challenges[j];
+    if(curr == 1) {
+        delete [] challenges;
+        challenges = new Challenge[size];
+    }
+    else {
+        for (int i = 0; i < curr; ++i) {
+            if (strcmp(challenges[i].getName(), _name) == 0) {
+                Challenge *arr = new Challenge[size - 1];
+                int counter = 0;
+                for (int j = 0; j < curr; ++j) {
+                    if (i != j)
+                        arr[counter++] = challenges[j];
+                }
+                delete[] challenges;
+                size--;
+                challenges = arr;
+
             }
-            delete [] challenges;
-            challenges = arr;
         }
     }
+    curr--;
 }
 
 User& User::operator=(User const &temp) {
@@ -90,7 +100,7 @@ User& User::operator=(User const &temp) {
             challenges[i] = temp.challenges[i];
         }
     }
-     return *this;
+    return *this;
 }
 
 void User::print() {
