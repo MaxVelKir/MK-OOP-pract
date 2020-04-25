@@ -1,0 +1,10 @@
+Name: Iron
+Manufacturer: 
+Unit: litres
+Quantity: 123
+Date of expiration: 1/1/1
+Date of registration in warehouse: 2/2/2
+Note: 
+Locations: 1.1.1 - 50
+           1.1.2 - 50
+           1.1.3 - 23
